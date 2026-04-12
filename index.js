@@ -1,9 +1,15 @@
 // const express = require("express");
 import express from 'express'
+import path from 'path'
 import ProductController from './src/controllers/product.controller.js'
 
 const port = 3400;
 const server = express();
+
+// Set view engine
+server.set("view engine", "ejs");
+// Set views Path
+server.set("views", path.join(path.resolve(), 'src', 'views'))
 
 // Create an instance of ProductController
 const productController = new ProductController()
