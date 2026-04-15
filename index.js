@@ -30,7 +30,7 @@ const productController = new ProductController();
 server.get('/', appController.getHome);
 server.get('/products', productController.getProducts);
 server.get('/new-product', productController.getAddForm);
-server.post('/', productController.addNewProduct);
+server.post('/products', productController.addNewProductAndValidate);
 
 server.use(express.static('src/views'));
 
