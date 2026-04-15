@@ -2,10 +2,14 @@
 import express from 'express'
 import path from 'path'
 import ejsLayouts from 'express-ejs-layouts'
+import AppController from './src/controllers/home.controller.js'
 import ProductController from './src/controllers/product.controller.js'
 
 const port = 3400;
 const server = express();
+
+// Parse form data
+server.use(express.urlencoded({extended: true}));
 
 // Set view engine
 server.set("view engine", "ejs");
@@ -16,11 +20,18 @@ server.set("views", path.join(path.resolve(), 'src', 'views'));
 server.use(ejsLayouts);
 
 // Create an instance of ProductController
-const productController = new ProductController()
+const appController = new AppController();
+
+// Create an instance of ProductController
+const productController = new ProductController();
 // server.get("/", (req, res) => {
 //     return res.send("Welcome to the Inventory App");
 // });
-server.get('/', productController.getProducts);
+server.get('/', appController.getHome);
+server.get('/products', productController.getProducts);
+server.get('/new-product', productController.getAddForm);
+server.post('/', productController.addNewProduct);
+
 server.use(express.static('src/views'));
 
 server.listen(port, () => {

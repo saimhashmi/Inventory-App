@@ -11,6 +11,20 @@ export default class ProductModel {
     static get() {
         return productsArray
     }
+
+    static add(productObj) {
+        // Adding ID & image Alt automatically
+        let newProduct = new ProductModel(
+            productsArray.length+1, 
+            productObj.name, 
+            productObj.desc, 
+            productObj.price, 
+            productObj.imageURL, 
+            productObj.desc
+        );
+        
+        productsArray.push(newProduct);
+    }
 }
 
 let productsArray = [

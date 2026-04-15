@@ -1,0 +1,33 @@
+body {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url("https://images.ctfassets.net/zuzzsqg9enty/5m2O1WbdJlcKBTBILPG53/5a5e478e6d4366d6eb26e9757ca937b7/AdobeStock_481003062.jpeg");
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+}
+
+#welcome-title {
+    text-align: center;
+    margin-top: 2em;
+}
+
+.container img {
+    width: 100px;
+}
+
+#form-container {
+    background-color: #212529;
+    color: white;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+@media (width > 991px) {
+    .scale {
+        transition: transform 0.3s;
+    }
+
+    .scale:hover,
+    .scale:focus {
+        transform: scale(1.05);
+    }
+}
