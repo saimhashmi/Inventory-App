@@ -4,9 +4,9 @@
 
 <form action="/products" method="post" id="form-container" class="row g-3 my-3 p-3">
     <% if (errorMessages) { %>
-        <% errorMessages.forEach(mssg => { %>
+        <% errorMessages.forEach(error => { %>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <%= mssg %>
+                <%= error.msg %>
             </div>
         <% }); %>
     <% } %>

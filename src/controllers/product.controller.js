@@ -33,7 +33,7 @@ export default class ProductController {
 	postAddProduct(req, res, next) {
 		ProductModel.add(req.body);
 		const products = ProductModel.get();
-		console.log("Sent status code:", 201);
+
 		return res
 			.status(201)
 			.render("product", { products: products, statusCode: 201 });
