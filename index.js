@@ -28,9 +28,13 @@ const productController = new ProductController();
 // server.get("/", (req, res) => {
 //     return res.send("Welcome to the Inventory App");
 // });
+// Load home page
 server.get("/", appController.getHome);
+// Load Products page on hitting '/products'
 server.get("/products", productController.getProducts);
+// Load New Product Form page on hitting '/new-product'
 server.get("/new-product", productController.getAddForm);
+// Validate Form data through middleware and on success navigate to '/new-product' and display updated product list
 server.post("/products", ValidationMiddleware, productController.addNewProduct);
 
 server.use(express.static("src/views"));

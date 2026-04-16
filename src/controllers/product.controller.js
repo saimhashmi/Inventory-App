@@ -6,14 +6,18 @@ export default class ProductController {
 		const products = ProductModel.get();
 		// console.log(products);
 		// console.log(path.resolve());
-		res.render("product", { products: products });
+		return res
+			.status(201)
+			.render("product", { products: products, statusCode: 201 });
 		// return res.sendFile(
 		//     path.join(path.resolve(), 'src/views', 'product.html'
 		// ));
 	}
 
 	getAddForm(req, res) {
-		return res.render("new-product", { errorMessages: null });
+		return res
+			.status(201)
+			.render("new-product", { errorMessages: null, statusCode: 201 });
 	}
 
 	addNewProduct(req, res) {
@@ -21,12 +25,17 @@ export default class ProductController {
 		console.log(req.body);
 		ProductModel.add(req.body);
 		const products = ProductModel.get();
-		res.render("product", { products: products });
+		return res
+			.status(201)
+			.render("product", { products: products, statusCode: 201 });
 	}
 
 	postAddProduct(req, res, next) {
 		ProductModel.add(req.body);
 		const products = ProductModel.get();
-		return res.render("product", { products: products });
+		console.log("Sent status code:", 201);
+		return res
+			.status(201)
+			.render("product", { products: products, statusCode: 201 });
 	}
 }

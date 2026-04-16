@@ -28,8 +28,9 @@ const validateRequest = (req, res, next) => {
 	console.log(errors);
 
 	if (errors.length > 0) {
-		return res.render("new-product", {
+		return res.status(400).render("new-product", {
 			errorMessages: errors,
+			statusCode: 400,
 		});
 	}
 
