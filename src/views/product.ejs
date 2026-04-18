@@ -1,5 +1,5 @@
 
-        <table class="table table-dark my-3">
+        <table class="table table-dark my-3 text-center align-middle">
             <thead>
                 <tr>
                     <th scope="col">ID</th>
@@ -7,6 +7,7 @@
                     <th scope="col">Description</th>
                     <th scope="col">Price (INR)</th>
                     <th scope="col">Image</th>
+                    <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -15,9 +16,14 @@
                             <th scope="row"><%= product.id %></th>
                             <td><%= product.name %></td>
                             <td><%= product.desc %></td>
-                            <td scope="col"><%= parseFloat(product.price).toFixed(2) %></td>
+                            <td><%= parseFloat(product.price).toFixed(2) %></td>
                             <td>
                                 <img src="<%= product.imageUrl %>" alt="<%= product.imageAlt %>">
+                            </td>
+                            <td>
+                                <a href="/update-product/<%= product.id %>" class="btn btn-warning">Edit</a>
+                                <!-- <a href="/delete-product/<%= product.id %>" class="btn btn-danger">Delete</a> -->
+                                 <button class="btn btn-danger" onclick="deleteProduct('<%= product.id %>')">Delete</button>
                             </td>
                         </tr>
                 <% }); %>
