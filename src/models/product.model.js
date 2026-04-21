@@ -19,30 +19,40 @@ export default class ProductModel {
 		);
 	}
 
-	static add(productObj) {
+	// static add(productObj) {
+	static add(name, desc, price, imageURL, imageAlt) {
 		// Adding ID & image Alt automatically
+		// let newProduct = new ProductModel(
+		// 	productsArray.length + 1,
+		// 	productObj.name,
+		// 	productObj.desc,
+		// 	productObj.price,
+		// 	productObj.imageURL,
+		// 	productObj.desc,
+		// );
 		let newProduct = new ProductModel(
 			productsArray.length + 1,
-			productObj.name,
-			productObj.desc,
-			productObj.price,
-			productObj.imageURL,
-			productObj.desc,
+			name,
+			desc,
+			price,
+			imageURL,
+			imageAlt,
 		);
 
+		console.log("New product to be added:", newProduct);
 		productsArray.push(newProduct);
 	}
 
-	static update(productObj) {
+	static update(id, name, desc, price, imageURL, imageAlt) {
 		const index = productsArray.findIndex(
-			(product) => parseInt(product.id) === parseInt(productObj.id),
+			(product) => parseInt(product.id) === parseInt(id),
 		);
 
-		productsArray[index].name = productObj.name;
-		productsArray[index].desc = productObj.desc;
-		productsArray[index].price = parseFloat(productObj.price).toFixed(2);
-		productsArray[index].imageUrl = productObj.imageURL;
-		productsArray[index].imageAlt = productObj.imageAlt;
+		productsArray[index].name = name;
+		productsArray[index].desc = desc;
+		productsArray[index].price = parseFloat(price).toFixed(2);
+		productsArray[index].imageUrl = imageURL;
+		productsArray[index].imageAlt = imageAlt;
 
 		return productsArray;
 	}

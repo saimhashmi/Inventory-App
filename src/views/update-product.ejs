@@ -2,7 +2,7 @@
 
 <h1 class="text-center my-3">Update Product</h1>
 
-<form action="/update-product/<%= product.id %>" method="post" id="form-container" class="row g-3 my-3 p-3">
+<form action="/update-product/<%= product.id %>" method="post" id="form-container" class="row g-3 my-3 p-3" enctype="multipart/form-data">
     <% if (errorMessages) { %>
         <% errorMessages.forEach(error => { %>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -29,7 +29,8 @@
     </div>
     <div class="col-12 mb-4">
         <label for="imageURL" class="form-label">Image URL</label>
-        <input type="url" class="form-control" id="imageURL" name="imageURL" value="<%= product.imageUrl %>">
+        <!-- <input type="url" class="form-control" id="imageURL" name="imageURL" value="<%= product.imageUrl %>"> -->
+        <input type="file" class="form-control" id="imageURL" name="imageURL" accept="image/jpeg, image/jpg, image/png">
     </div>
     <div class="col-12 mb-3">
         <!-- <label for="id" class="form-label">Product ID</label> -->

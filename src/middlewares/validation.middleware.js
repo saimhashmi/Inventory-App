@@ -36,7 +36,13 @@ const validateRequest = async (req, res, next) => {
 		body("price")
 			.isFloat({ gt: 0 })
 			.withMessage("Price should be positive"),
-		body("imageURL").isURL().withMessage("Invalid URL"),
+		// body("imageURL").isURL().withMessage("Invalid URL"),
+		body("imageURL").custom((value, { req }) => {
+			if (!req.file) {
+				throw new Error("Image is required");
+			}
+			return true;
+		}),
 	];
 
 	// 2. Run those rules
@@ -50,6 +56,39 @@ const validateRequest = async (req, res, next) => {
 		console.log(errorsArray);
 		return res.status(400).render("new-product", {
 			errorMessages: errorsArray,
+			statusCode: 400,
+		});
+	}
+
+	next();
+};
+
+// Validation for update product (image is optional)
+export const validateUpdateRequest = async (req, res, next) => {
+	console.log(req.body);
+
+	// Using express-validator
+	// 1. Setup rules for validation (image is optional for updates)
+	const rules = [
+		body("name").notEmpty().withMessage("Name is required"),
+		body("desc").notEmpty().withMessage("Description is required"),
+		body("price")
+			.isFloat({ gt: 0 })
+			.withMessage("Price should be positive"),
+	];
+
+	// 2. Run those rules
+	await Promise.all(rules.map((rule) => rule.run(req)));
+
+	// 3. Check if there are any errors after runnig the rules
+	let errors = validationResult(req);
+
+	if (!errors.isEmpty()) {
+		const errorsArray = errors.array();
+		console.log(errorsArray);
+		return res.status(400).render("update-product", {
+			errorMessages: errorsArray,
+			product: req.body,
 			statusCode: 400,
 		});
 	}

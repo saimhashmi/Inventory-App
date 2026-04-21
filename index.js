@@ -4,7 +4,10 @@ import path from "path";
 import ejsLayouts from "express-ejs-layouts";
 import AppController from "./src/controllers/home.controller.js";
 import ProductController from "./src/controllers/product.controller.js";
-import ValidationMiddleware from "./src/middlewares/validation.middleware.js";
+import ValidationMiddleware, {
+	validateUpdateRequest,
+} from "./src/middlewares/validation.middleware.js";
+import { uploadFile } from "./src/middlewares/file-upload.middleware.js";
 
 const port = 3400;
 const server = express();
@@ -20,8 +23,11 @@ server.set("views", path.join(path.resolve(), "src", "views"));
 // Use Express-EJS-Layouts
 server.use(ejsLayouts);
 
-// Expose public folder
+// For the public folder
 server.use(express.static("public"));
+
+// For the assets folder outside public
+server.use("/assets", express.static("assets"));
 
 // Create an instance of ProductController
 const appController = new AppController();
@@ -43,7 +49,12 @@ server.get("/products", productController.getProducts);
 server.get("/new-product", productController.getAddForm);
 
 // Validate Form data through middleware and on success navigate to '/new-product' and display updated product list
-server.post("/products", ValidationMiddleware, productController.addNewProduct);
+server.post(
+	"/products",
+	uploadFile.single("imageURL"),
+	ValidationMiddleware,
+	productController.addNewProduct,
+);
 
 // Load New Product Form page on hitting '/new-product'
 server.get("/update-product/:id", productController.getUpdateProductView);
@@ -51,7 +62,8 @@ server.get("/update-product/:id", productController.getUpdateProductView);
 // Update Product list
 server.post(
 	"/update-product/:id",
-	ValidationMiddleware,
+	uploadFile.single("imageURL"),
+	validateUpdateRequest,
 	productController.postUpdateProduct,
 );
 

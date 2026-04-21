@@ -23,14 +23,20 @@ export default class ProductController {
 	addNewProduct(req, res) {
 		// Access data from form
 		console.log(req.body);
-		ProductModel.add(req.body);
+		const { name, desc, price } = req.body;
+		const imageURL = "assets/images/" + req.file.filename;
+		const imageAlt = desc;
+		// ProductModel.add(req.body);
+		ProductModel.add(name, desc, price, imageURL, imageAlt);
 		const products = ProductModel.get();
+
 		return res
 			.status(201)
 			.render("product", { products: products, statusCode: 201 });
 	}
 
 	postAddProduct(req, res, next) {
+		// ProductModel.add(req.body);
 		ProductModel.add(req.body);
 		const products = ProductModel.get();
 		return res
@@ -67,8 +73,28 @@ export default class ProductController {
 	}
 
 	postUpdateProduct(req, res) {
-		// console.log(req.body);
-		const products = ProductModel.update(req.body);
+		console.log(req.body);
+		const { id, name, desc, price } = req.body;
+
+		// Check if a new file was uploaded
+		let imageURL;
+		if (req.file) {
+			imageURL = "assets/images/" + req.file.filename;
+		} else {
+			// Keep the existing image if no new file uploaded
+			const product = ProductModel.getbyId(id);
+			imageURL = product.imageUrl;
+		}
+
+		const imageAlt = desc;
+		const products = ProductModel.update(
+			id,
+			name,
+			desc,
+			price,
+			imageURL,
+			imageAlt,
+		);
 		// console.log(products);
 
 		return res
