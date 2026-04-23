@@ -8,6 +8,7 @@ import ValidationMiddleware, {
 	validateUpdateRequest,
 } from "./src/middlewares/validation.middleware.js";
 import { uploadFile } from "./src/middlewares/file-upload.middleware.js";
+import UserController from "./src/controllers/user.controller.js";
 
 const port = 3400;
 const server = express();
@@ -26,14 +27,20 @@ server.use(ejsLayouts);
 // For the public folder
 server.use(express.static("public"));
 
-// For the assets folder outside public
+// For the assets folder
 server.use("/assets", express.static("assets"));
+
+// For the views folder
+server.use(express.static("src/views"));
 
 // Create an instance of ProductController
 const appController = new AppController();
 
 // Create an instance of ProductController
 const productController = new ProductController();
+
+// Create an instance of ProductController
+const userController = new UserController();
 
 // server.get("/", (req, res) => {
 //     return res.send("Welcome to the Inventory App");
@@ -69,7 +76,10 @@ server.post(
 
 server.post("/delete-product/:id", productController.deleteProduct);
 
-server.use(express.static("src/views"));
+server.get("/login", userController.getLoginForm);
+server.get("/sign-up", userController.getSignUpForm);
+server.post("/sign-up", userController.postSignUp);
+server.post("/login", userController.postLogin);
 
 server.listen(port, () => {
 	console.log(
