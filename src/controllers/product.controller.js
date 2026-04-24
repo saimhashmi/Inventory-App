@@ -4,20 +4,29 @@ import ProductModel from "../models/product.model.js";
 export default class ProductController {
 	getProducts(req, res) {
 		const products = ProductModel.get();
-		// console.log(products);
-		// console.log(path.resolve());
-		return res
-			.status(201)
-			.render("product", { products: products, statusCode: 201 });
+
+		const email = req.session.userEmail;
+		console.log(`user ${email} is viewing product list`);
+
+		return res.status(201).render("product", {
+			products: products,
+			userEmail: req.session.userEmail,
+			statusCode: 201,
+		});
 		// return res.sendFile(
 		//     path.join(path.resolve(), 'src/views', 'product.html'
 		// ));
 	}
 
 	getAddForm(req, res) {
-		return res
-			.status(201)
-			.render("new-product", { errorMessages: null, statusCode: 201 });
+		const email = req.session.userEmail;
+		console.log(`user ${email} requested product add form`);
+
+		return res.status(201).render("new-product", {
+			errorMessages: null,
+			userEmail: req.session.userEmail,
+			statusCode: 201,
+		});
 	}
 
 	addNewProduct(req, res) {
@@ -26,45 +35,46 @@ export default class ProductController {
 		const { name, desc, price } = req.body;
 		const imageURL = "assets/images/" + req.file.filename;
 		const imageAlt = desc;
+
 		// ProductModel.add(req.body);
 		ProductModel.add(name, desc, price, imageURL, imageAlt);
 		const products = ProductModel.get();
 
-		return res
-			.status(201)
-			.render("product", { products: products, statusCode: 201 });
+		const email = req.session.userEmail;
+		console.log(`user ${email} is adding new product`, req.body);
+
+		return res.status(201).render("product", {
+			products: products,
+			userEmail: req.session.userEmail,
+			statusCode: 201,
+		});
 	}
 
 	postAddProduct(req, res, next) {
 		// ProductModel.add(req.body);
 		ProductModel.add(req.body);
 		const products = ProductModel.get();
-		return res
-			.status(201)
-			.render("product", { products: products, statusCode: 201 });
+		return res.status(201).render("product", {
+			products: products,
+			userEmail: req.session.userEmail,
+			statusCode: 201,
+		});
 	}
-
-	// getUpdateForm(req, res, next) {
-	// 	res.status(201).render("update-product", {
-	// 		errorMessages: null,
-	// 		statusCode: 201,
-	// 	});
-	// 	next();
-	// }
 
 	getUpdateProductView(req, res, next) {
 		// req.body doesn't work with latest express package it worked in video because of old express package express@4.18.2
-		// console.log("params:", req.params, "query:", req.query);
 		// console.log(req.params.id);
 		const id = req.params.id;
-		// console.log("from getUpdateProductView:", req.params.id, id);
 		// console.trace("Trace");
 		const product = ProductModel.getbyId(id);
-		console.log(product);
 
 		if (product) {
+			const email = req.session.userEmail;
+			console.log(`user ${email} is updating product`, product);
+
 			res.status(201).render("update-product", {
 				errorMessages: null,
+				userEmail: req.session.userEmail,
 				product: product,
 			});
 		} else {
@@ -95,28 +105,36 @@ export default class ProductController {
 			imageURL,
 			imageAlt,
 		);
-		// console.log(products);
 
-		return res
-			.status(201)
-			.render("product", { products: products, statusCode: 201 });
+		const email = req.session.userEmail;
+		console.log(`user ${email} updated product`, product);
+
+		return res.status(201).render("product", {
+			products: products,
+			userEmail: req.session.userEmail,
+			statusCode: 201,
+		});
 	}
 
 	deleteProduct(req, res) {
 		// Will use params since we are getting data from GET
 		const products = ProductModel.get();
 		const deletedProduct = ProductModel.delete(req.params.id);
-		console.log("Product deleted from view:", deletedProduct);
 
 		if (deletedProduct) {
+			const email = req.session.userEmail;
+			console.log(`user ${email} is updating product`, deletedProduct);
+
 			return res.status(201).render("product", {
 				products: products,
+				userEmail: req.session.userEmail,
 				statusCode: 201,
 			});
 		} else {
 			return res.status(400).render("product", {
 				products: products,
-				statusCode: 201,
+				userEmail: req.session.userEmail,
+				statusCode: 400,
 			});
 		}
 	}

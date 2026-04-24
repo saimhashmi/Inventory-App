@@ -16,7 +16,7 @@
 			crossorigin="anonymous"
 		></script>
 		<script src="/script.js" defer></script>
-		<title>Products</title>
+		<title>Inventory App</title>
 	</head>
 	<body>
 		<nav
@@ -65,20 +65,27 @@
 						</li>
 					</ul>
 					<div class="me-2">
-						<a
+						<% if (locals.userEmail) { %>
+							<a
+							href="/logout"
+							class="btn btn-outline-light"
+							role="button"
+							aria-disabled="true"
+							>Logout</a>
+						<% } else { %>
+							<a
 							href="/login"
 							class="btn btn-outline-light"
 							role="button"
 							aria-disabled="true"
-							>Login</a
-						>
-						<a
+							>Login</a>
+							<a
 							href="/sign-up"
 							class="btn btn-outline-light"
 							role="button"
 							aria-disabled="true"
-							>Sign Up</a
-						>
+							>Sign Up</a>
+						<% } %>
 					</div>
 				</div>
 			</div>

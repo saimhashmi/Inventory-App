@@ -17,4 +17,11 @@ export default class UserModel {
 	}
 }
 
-let users = [];
+let users = [
+	{
+		id: 1,
+		username: "SuperAdmin",
+		email: "superadmin@mysite.com",
+		password: "admin",
+	},
+];

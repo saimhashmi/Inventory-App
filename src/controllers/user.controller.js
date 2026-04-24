@@ -17,7 +17,10 @@ export default class UserController {
 		// console.log(req.body);
 		const { username, email, password } = req.body;
 		UserModel.add(username, email, password);
-		return res.status(201).render("login");
+		console.log(`User ${email} signed up`);
+		return res
+			.status(201)
+			.render("login", { userEmail: req.session.userEmail });
 	}
 
 	postLogin(req, res) {
@@ -25,13 +28,30 @@ export default class UserController {
 		const user = UserModel.get().find(
 			(user) => user.email === email && user.password === password,
 		);
-		if (user) {
-			return res.status(201).render("home", { user: user });
-		} else {
+		if (!user) {
 			return res.status(401).render("login", {
 				errorMessages: "Invalid email or password",
 				statusCode: 401,
 			});
 		}
+
+		req.session.userEmail = email;
+		console.log(`User ${email} logged in`);
+		return res
+			.status(201)
+			.render("home", { user: user, userEmail: req.session.userEmail });
+	}
+
+	logout(req, res) {
+		// On logout destroy the session
+		const email = req.session.userEmail;
+		req.session.destroy((err) => {
+			if (err) {
+				console.log("unable to logout:", err);
+			} else {
+				console.log(`user ${user} logged out`);
+				res.redirect("/login");
+			}
+		});
 	}
 }
