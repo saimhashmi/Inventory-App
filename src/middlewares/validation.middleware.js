@@ -1,7 +1,7 @@
 import { body, validationResult } from "express-validator";
 
-const validateRequest = async (req, res, next) => {
-	console.log(req.body);
+export const validateNewProductRequest = async (req, res, next) => {
+	console.log("New Product Form Input:", req.body);
 	// Commenting manual validation
 	// const { name, desc, price, imageURL } = req.body;
 	// let errors = [];
@@ -53,7 +53,7 @@ const validateRequest = async (req, res, next) => {
 
 	if (!errors.isEmpty()) {
 		const errorsArray = errors.array();
-		console.log(errorsArray);
+		console.log("Errors in New Product form input:", errorsArray);
 		return res.status(400).render("new-product", {
 			errorMessages: errorsArray,
 			statusCode: 400,
@@ -64,8 +64,8 @@ const validateRequest = async (req, res, next) => {
 };
 
 // Validation for update product (image is optional)
-export const validateUpdateRequest = async (req, res, next) => {
-	console.log(req.body);
+export const validateUpdateProductRequest = async (req, res, next) => {
+	console.log("Update Product Form Input:", req.body);
 
 	// Using express-validator
 	// 1. Setup rules for validation (image is optional for updates)
@@ -85,7 +85,7 @@ export const validateUpdateRequest = async (req, res, next) => {
 
 	if (!errors.isEmpty()) {
 		const errorsArray = errors.array();
-		console.log(errorsArray);
+		console.log("Errors in Update Product form input:", errorsArray);
 		return res.status(400).render("update-product", {
 			errorMessages: errorsArray,
 			product: req.body,
@@ -96,4 +96,36 @@ export const validateUpdateRequest = async (req, res, next) => {
 	next();
 };
 
-export default validateRequest;
+// Validation for New User Registration Request
+export const validateNewUserRequest = async (req, res, next) => {
+	console.log("New User Register Form Input:", req.body);
+
+	// Using express-validator
+	// 1. Setup rules for validation (image is optional for updates)
+	const rules = [
+		body("username").notEmpty().withMessage("User Name is required"),
+		body("email").isEmail().withMessage("Enter a valid Email Address"),
+		body("password")
+			.notEmpty()
+			.withMessage("Password is required")
+			.isLength({ min: 6 })
+			.withMessage("Password must be at least 6 characters"),
+	];
+
+	// 2. Run those rules
+	await Promise.all(rules.map((rule) => rule.run(req)));
+
+	// 3. Check if there are any errors after runnig the rules
+	let errors = validationResult(req);
+
+	if (!errors.isEmpty()) {
+		const errorsArray = errors.array();
+		console.log("Errors in Update Product form input:", errorsArray);
+		return res.status(400).render("sign-up", {
+			errorMessages: errorsArray,
+			statusCode: 400,
+		});
+	}
+
+	next();
+};

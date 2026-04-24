@@ -4,8 +4,10 @@ import path from "path";
 import ejsLayouts from "express-ejs-layouts";
 import AppController from "./src/controllers/home.controller.js";
 import ProductController from "./src/controllers/product.controller.js";
-import ValidationMiddleware, {
-	validateUpdateRequest,
+import {
+	validateNewProductRequest,
+	validateUpdateProductRequest,
+	validateNewUserRequest,
 } from "./src/middlewares/validation.middleware.js";
 import { uploadFile } from "./src/middlewares/file-upload.middleware.js";
 import UserController from "./src/controllers/user.controller.js";
@@ -59,7 +61,7 @@ server.get("/new-product", productController.getAddForm);
 server.post(
 	"/products",
 	uploadFile.single("imageURL"),
-	ValidationMiddleware,
+	validateNewProductRequest,
 	productController.addNewProduct,
 );
 
@@ -70,7 +72,7 @@ server.get("/update-product/:id", productController.getUpdateProductView);
 server.post(
 	"/update-product/:id",
 	uploadFile.single("imageURL"),
-	validateUpdateRequest,
+	validateUpdateProductRequest,
 	productController.postUpdateProduct,
 );
 
@@ -78,7 +80,7 @@ server.post("/delete-product/:id", productController.deleteProduct);
 
 server.get("/login", userController.getLoginForm);
 server.get("/sign-up", userController.getSignUpForm);
-server.post("/sign-up", userController.postSignUp);
+server.post("/sign-up", validateNewUserRequest, userController.postSignUp);
 server.post("/login", userController.postLogin);
 
 server.listen(port, () => {

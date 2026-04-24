@@ -2,11 +2,15 @@ import UserModel from "../models/user.model.js";
 
 export default class UserController {
 	getLoginForm(req, res) {
-		return res.status(201).render("login");
+		return res
+			.status(201)
+			.render("login", { errorMessages: null, statusCode: 201 });
 	}
 
 	getSignUpForm(req, res) {
-		return res.status(201).render("sign-up");
+		return res
+			.status(201)
+			.render("sign-up", { errorMessages: null, statusCode: 201 });
 	}
 
 	postSignUp(req, res) {
@@ -24,9 +28,10 @@ export default class UserController {
 		if (user) {
 			return res.status(201).render("home", { user: user });
 		} else {
-			return res
-				.status(401)
-				.send({ message: "Invalid email or password" });
+			return res.status(401).render("login", {
+				errorMessages: "Invalid email or password",
+				statusCode: 401,
+			});
 		}
 	}
 }

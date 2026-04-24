@@ -16,6 +16,11 @@
 								</div>
 							</div>
 						</div>
+						<% if (errorMessages) { %>
+							<div class="alert alert-danger alert-dismissible fade show" role="alert">
+								<%= errorMessages %>
+							</div>
+						<% } %>
 						<form action="/login" method="post">
 							<div class="form-group mb-3">
 								<label for="email">Email address</label>
