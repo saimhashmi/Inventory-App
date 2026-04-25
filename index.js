@@ -3,6 +3,7 @@ import express from "express";
 import path from "path";
 import ejsLayouts from "express-ejs-layouts";
 import session from "express-session";
+import cookieParser from "cookie-parser";
 import HomeController from "./src/controllers/home.controller.js";
 import ProductController from "./src/controllers/product.controller.js";
 import UserController from "./src/controllers/user.controller.js";
@@ -13,6 +14,7 @@ import {
 } from "./src/middlewares/validation.middleware.js";
 import { uploadFile } from "./src/middlewares/file-upload.middleware.js";
 import { auth } from "./src/middlewares/auth.middleware.js";
+import { setLastVisit } from "./src/middlewares/lastVisit.middleware.js";
 
 const port = 3400;
 const server = express();
@@ -32,6 +34,10 @@ server.use(
 		cookie: { secure: false },
 	}),
 );
+
+// Use Cookie-Parser
+server.use(cookieParser());
+// server.use(setLastVisit);
 
 // For the public folder
 server.use(express.static("public"));
@@ -63,8 +69,8 @@ const userController = new UserController();
 // Load home page
 server.get("/", homeController.getHome);
 
-// Load Products page on hitting '/products'
-server.get("/products", auth, productController.getProducts);
+// Load Products page on hitting '/products', setting cookie only on login
+server.get("/products", auth, setLastVisit, productController.getProducts);
 
 // Load New Product Form page on hitting '/new-product'
 server.get("/new-product", auth, productController.getAddForm);

@@ -49,9 +49,11 @@ export default class UserController {
 			if (err) {
 				console.log("unable to logout:", err);
 			} else {
-				console.log(`user ${user} logged out`);
+				console.log(`user ${email} logged out`);
 				res.redirect("/login");
 			}
 		});
+		// Clearing lastVisit time cookie on logout
+		res.clearCookie("lastVisit");
 	}
 }

@@ -1,4 +1,8 @@
-
+        <% if(locals.lastVisit) { %>
+            <div class="alert alert-primary my-3" role="alert">
+                Last visited: <%= locals.lastVisit %>
+            </div>
+        <% } %>
         <table class="table table-dark my-3 text-center align-middle">
             <thead>
                 <tr>
